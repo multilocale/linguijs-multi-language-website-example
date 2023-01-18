@@ -1,26 +1,32 @@
+import React, { useEffect } from 'react'
 import { i18n } from '@lingui/core'
 import { detect, fromNavigator } from "@lingui/detect-locale"
 import { I18nProvider } from '@lingui/react'
 import { Trans } from '@lingui/macro'
-import { messages as enMessages } from './locales/en/messages'
-import { messages as esMessages } from './locales/es/messages'
 import logo from './logo.svg';
 import './App.css';
 
 const DEFAULT_FALLBACK = 'en'
 
-const currentLocale = detect(
-  fromNavigator(),
-  DEFAULT_FALLBACK
-)
-
-i18n.load({
-  en: enMessages,
-  es: esMessages,
-})
-i18n.activate(currentLocale)
+export async function dynamicActivate(locale) {
+  const { default: messages } = await import(
+    /* webpackChunkName: "language-[request]" */
+    `./locales/${locale}/messages.json`)
+  // console.log({ messages })
+  i18n.load(locale, messages)
+  i18n.activate(locale)
+}
 
 function App() {
+
+  useEffect(() => {
+    const currentLocale = detect(
+      fromNavigator()?.substring(0, 2),
+      DEFAULT_FALLBACK
+    )
+    dynamicActivate(currentLocale)
+  }, [])
+
   return (
     <I18nProvider i18n={i18n}>
       <div className="App">
