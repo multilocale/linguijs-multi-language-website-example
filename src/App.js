@@ -1,5 +1,5 @@
 import { i18n } from '@lingui/core'
-import { detect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale"
+import { detect, fromNavigator } from "@lingui/detect-locale"
 import { I18nProvider } from '@lingui/react'
 import { Trans } from '@lingui/macro'
 import { messages as enMessages } from './locales/en/messages'
