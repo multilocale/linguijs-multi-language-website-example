@@ -1,4 +1,5 @@
 import { i18n } from '@lingui/core'
+import { detect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale"
 import { I18nProvider } from '@lingui/react'
 import { Trans } from '@lingui/macro'
 import { messages as enMessages } from './locales/en/messages'
@@ -6,11 +7,18 @@ import { messages as esMessages } from './locales/es/messages'
 import logo from './logo.svg';
 import './App.css';
 
+const DEFAULT_FALLBACK = 'en'
+
+const currentLocale = detect(
+  fromNavigator(),
+  DEFAULT_FALLBACK
+)
+
 i18n.load({
   en: enMessages,
   es: esMessages,
 })
-i18n.activate('es')
+i18n.activate(currentLocale)
 
 function App() {
   return (
